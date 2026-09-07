@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dynamic Data Table</title>
+	<style>
+		:root {
+			color-scheme: light;
+			font-family: Arial, sans-serif;
+		}
+
+		body {
+			margin: 0;
+			padding: 2rem 1rem;
+			background: #f3f4f6;
+			color: #1f2937;
+		}
+
+		main {
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 2rem;
+			background: #ffffff;
+			border-radius: 8px;
+			box-shadow: 0 4px 18px rgb(0 0 0 / 8%);
+		}
+
+		h1 {
+			margin-top: 0;
+		}
+
+		form {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr) auto;
+			gap: 1rem;
+			align-items: end;
+			margin-bottom: 2rem;
+		}
+
+		label {
+			display: grid;
+			gap: 0.4rem;
+			font-weight: 600;
+		}
+
+		input,
+		select,
+		button {
+			box-sizing: border-box;
+			min-height: 2.5rem;
+			padding: 0.55rem 0.7rem;
+			border: 1px solid #cbd5e1;
+			border-radius: 4px;
+			font: inherit;
+		}
+
+		button {
+			border-color: #2563eb;
+			background: #2563eb;
+			color: #ffffff;
+			cursor: pointer;
+			font-weight: 600;
+		}
+
+		button:hover {
+			background: #1d4ed8;
+		}
+
+		.table-wrapper {
+			overflow-x: auto;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			padding: 0.8rem;
+			border-bottom: 1px solid #e5e7eb;
+			text-align: left;
+		}
+
+		th {
+			background: #eff6ff;
+			color: #1e3a8a;
+		}
+
+		@media (max-width: 700px) {
+			form {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Team Members</h1>
+		<form id="member-form">
+			<label for="name">Name
+				<input id="name" name="name" type="text" required>
+			</label>
+			<label for="email">Email
+				<input id="email" name="email" type="email" required>
+			</label>
+			<label for="role">Role
+				<select id="role" name="role" required>
+					<option value="">Select a role</option>
+					<option value="Designer">Designer</option>
+					<option value="Developer">Developer</option>
+					<option value="Manager">Manager</option>
+				</select>
+			</label>
+			<button type="submit">Add row</button>
+		</form>
+
+		<div class="table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Email</th>
+						<th scope="col">Role</th>
+					</tr>
+				</thead>
+				<tbody id="member-rows"></tbody>
+			</table>
+		</div>
+	</main>
+
+	<script>
+		const form = document.querySelector('#member-form');
+		const rows = document.querySelector('#member-rows');
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			const formData = new FormData(form);
+			const row = document.createElement('tr');
+
+			['name', 'email', 'role'].forEach((field) => {
+				const cell = document.createElement('td');
+				cell.textContent = formData.get(field);
+				row.appendChild(cell);
+			});
+
+			rows.appendChild(row);
+			form.reset();
+		});
+	</script>
+</body>
+</html>
